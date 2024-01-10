@@ -1,6 +1,6 @@
-from app import create_app
+from app import checky
 
-app = create_app()
+app = checky()
 
 if __name__ == "__main__":
     app.run(debug=True)

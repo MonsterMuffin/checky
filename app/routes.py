@@ -1,4 +1,6 @@
-from flask import request, jsonify, Blueprint, Response
+from flask import request, jsonify, Blueprint, Response, Flask
+from prometheus_client import generate_latest
+from .metrics import custom_registry
 from .models import DNSRecord, get_db
 
 bp = Blueprint('checky', __name__)
@@ -10,6 +12,10 @@ def init_routes(app):
 def metrics_json():
     records = DNSRecord.list_records()
     return jsonify(records)
+
+@bp.route('/metrics')
+def metrics():
+    return Response(generate_latest(custom_registry), mimetype='text/plain')
 
 @bp.route('/add_dns_record', methods=['POST'])
 def add_dns_record():
