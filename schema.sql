@@ -1,5 +1,3 @@
--- schema.sql
-
 CREATE TABLE IF NOT EXISTS dns_records (
     id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
