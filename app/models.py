@@ -35,7 +35,12 @@ class DNSRecord:
     @staticmethod
     def add_record(name):
         details = get_certificate_details(name)
+        if 'error' in details:
+            return {"error": details["error"]}
+
         tls_version = get_tls_version(name)
+        if 'error' in tls_version:
+            return {"error": tls_version["error"]}
         db = get_db()
         cursor = db.cursor()
         cursor.execute("""
@@ -57,3 +62,25 @@ class DNSRecord:
         cursor = db.execute("SELECT * FROM dns_records")
         records = cursor.fetchall()
         return [dict(record) for record in records]
+
+    @staticmethod
+    def update_record(record_id, updated_details, updated_tls_version):
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("""
+            UPDATE dns_records
+            SET expiry_date=?, issuer=?, subject=?, issued_date=?, version=?, serial_number=?, signature_algorithm=?, sans=?, tls_version=?
+            WHERE id=?
+        """, (
+            updated_details['expiry_date'],
+            updated_details['issuer'],
+            updated_details['subject'],
+            updated_details['issued_date'],
+            updated_details['version'],
+            updated_details['serial_number'],
+            updated_details['signature_algorithm'],
+            ', '.join(updated_details['sans']),
+            updated_tls_version,
+            record_id
+        ))
+        db.commit()

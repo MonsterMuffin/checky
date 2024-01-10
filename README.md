@@ -1,4 +1,4 @@
-# Checky: An app for checking certificates.
+# Checky: An tool for checking certificates.
 
 ## API Endpoints
 
@@ -40,6 +40,7 @@ The endpoint returns a JSON array of objects, each representing a DNS record. Ea
 * expiry_date: The expiry date of the associated SSL/TLS certificate.
 * issued_date: The issue date of the certificate.
 * issuer: The issuer of the certificate.
+* sans: SANs of the certificate.
 * subject: The subject for which the certificate was issued.
 * serial_number: The serial number of the certificate.
 * signature_algorithm: The algorithm used for the certificate's signature.
@@ -64,5 +65,4 @@ The endpoint returns a JSON array of objects, each representing a DNS record. Ea
     "version": 3
   }
 ]
-
 ```
