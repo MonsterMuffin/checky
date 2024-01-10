@@ -5,6 +5,9 @@ from .metrics import update_dns_metrics
 from flask_cors import CORS
 import threading
 import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 def checky():
     app = Flask('checky')
@@ -28,7 +31,7 @@ def start_updater(app):
         while True:
             update_dns_records()
             update_dns_metrics()
-            time.sleep(1)
+            time.sleep(0.1) # CHANGE THIS BEFORE DEPLOY
 
 def update_dns_records():
     records = DNSRecord.list_records()
@@ -43,8 +46,3 @@ def update_dns_records():
         ) or record['tls_version'] != updated_tls_version
         if needs_update:
             DNSRecord.update_record(record['id'], updated_details, updated_tls_version)
-
-def update_dns_metrics():
-    records = DNSRecord.list_records()
-    for record in records:
-        pass
