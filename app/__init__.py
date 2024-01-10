@@ -31,7 +31,7 @@ def start_updater(app):
         while True:
             update_dns_records()
             update_dns_metrics()
-            time.sleep(0.1) # CHANGE THIS BEFORE DEPLOY
+            time.sleep(1) # CHANGE THIS BEFORE DEPLOY
 
 def update_dns_records():
     records = DNSRecord.list_records()
