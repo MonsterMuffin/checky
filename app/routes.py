@@ -14,8 +14,10 @@ def metrics_json():
 @bp.route('/add_dns_record', methods=['POST'])
 def add_dns_record():
     data = request.get_json()
-    record_id = DNSRecord.add_record(data['name'])
-    return jsonify({"message": "DNS record added", "id": record_id}), 201
+    result = DNSRecord.add_record(data['name'])
+    if isinstance(result, dict) and "error" in result:
+        return jsonify({"error": result["error"]}), 400
+    return jsonify({"message": "DNS record added", "id": result}), 201
 
 @bp.route('/remove_dns_record/<int:record_id>', methods=['DELETE'])
 def remove_dns_record(record_id):

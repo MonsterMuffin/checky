@@ -35,7 +35,12 @@ class DNSRecord:
     @staticmethod
     def add_record(name):
         details = get_certificate_details(name)
+        if 'error' in details:
+            return {"error": details["error"]}
+
         tls_version = get_tls_version(name)
+        if 'error' in tls_version:
+            return {"error": tls_version["error"]}
         db = get_db()
         cursor = db.cursor()
         cursor.execute("""
